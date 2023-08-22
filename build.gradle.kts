@@ -14,6 +14,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("dev.siro256.modelio:ModelIO:0.1.0-SNAPSHOT")
+    implementation("dev.siro256.fastset:FastSet:0.1.0-SNAPSHOT")
 
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
