@@ -1,0 +1,29 @@
+# Exported by objIO. https://github.com/Kotatsu-RTM/objIO
+#
+# 6 vertices
+# 4 triangles
+# 2 objects
+# 2 materials
+
+v 0.0 0.0 0.0
+v 1.0 0.0 0.0
+v 0.0 1.0 0.0
+v 1.0 1.0 0.0
+v 0.0 1.0 -1.0
+v 1.0 1.0 -1.0
+vn 0.0 0.0 1.0
+vn 0.0 1.0 0.0
+vt 0.5 0.0
+vt 0.0 0.5
+vt 0.5 0.5
+vt 1.0 0.5
+vt 0.5 1.0
+vt 1.0 1.0
+o square1
+f 1//1 2//1 3//1
+usemtl material1
+f 2/1/1 4/3/1 3/2/1
+o square2
+f 3//2 4//2 5//2
+usemtl material2
+f 4/4/2 6/6/2 5/5/2
