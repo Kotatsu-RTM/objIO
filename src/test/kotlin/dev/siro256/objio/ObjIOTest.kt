@@ -17,8 +17,8 @@ class ObjIOTest {
 
     @ParameterizedTest
     @MethodSource("testDataProvider")
-    fun testParse(byteArray: ByteArray, model: Model) {
-        assertEquals(model, ObjIO.parse(byteArray).getOrThrow())
+    fun testParse(byteArray: SimpleToStringByteArray, model: Model) {
+        assertEquals(model, ObjIO.parse(byteArray.byteArray).getOrThrow())
     }
 
     /**
@@ -29,19 +29,23 @@ class ObjIOTest {
      */
     @ParameterizedTest
     @MethodSource("testDataProvider")
-    fun testExport(byteArray: ByteArray, model: Model) {
+    fun testExport(byteArray: SimpleToStringByteArray, model: Model) {
         assertEquals(model, ObjIO.parse(ObjIO.export(model).getOrThrow()).getOrThrow())
     }
 
     companion object {
         private val case1Obj =
-            this::class.java.classLoader.getResourceAsStream("dev/siro256/objio/ObjIOTest/case1.obj")!!.readBytes()
+            this::class.java.classLoader.getResourceAsStream("dev/siro256/objio/ObjIOTest/case1.obj")!!
+                .readBytes().wrap()
         private val case2Obj =
-            this::class.java.classLoader.getResourceAsStream("dev/siro256/objio/ObjIOTest/case2.obj")!!.readBytes()
+            this::class.java.classLoader.getResourceAsStream("dev/siro256/objio/ObjIOTest/case2.obj")!!
+                .readBytes().wrap()
         private val case3Obj =
-            this::class.java.classLoader.getResourceAsStream("dev/siro256/objio/ObjIOTest/case3.obj")!!.readBytes()
+            this::class.java.classLoader.getResourceAsStream("dev/siro256/objio/ObjIOTest/case3.obj")!!
+                .readBytes().wrap()
         private val case4Obj =
-            this::class.java.classLoader.getResourceAsStream("dev/siro256/objio/ObjIOTest/case4.obj")!!.readBytes()
+            this::class.java.classLoader.getResourceAsStream("dev/siro256/objio/ObjIOTest/case4.obj")!!
+                .readBytes().wrap()
         private val case1ExpectedModel =
             Model(emptyList())
         private val case2ExpectedModel =
@@ -292,5 +296,11 @@ class ObjIOTest {
                 Arguments.of(case3Obj, case3ExpectedModel),
                 Arguments.of(case4Obj, case4ExpectedModel)
             )
+
+        private fun ByteArray.wrap() = SimpleToStringByteArray(this)
+
+        class SimpleToStringByteArray(@Suppress("MemberVisibilityCanBePrivate") val byteArray: ByteArray) {
+            override fun toString() = "ByteArray(length=${byteArray.size})"
+        }
     }
 }
