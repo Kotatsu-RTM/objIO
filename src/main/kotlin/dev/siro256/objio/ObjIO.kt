@@ -3,6 +3,8 @@ package dev.siro256.objio
 import dev.siro256.fastset.FastIndexSet
 import dev.siro256.modelio.Model
 import dev.siro256.modelio.ModelIO
+import java.util.*
+import kotlin.jvm.optionals.getOrNull
 
 object ObjIO : ModelIO {
     private val VERTEX = Regex("^v ([\\d.e-]+) ([\\d.e-]+) ([\\d.e-]+)$")
@@ -26,13 +28,13 @@ object ObjIO : ModelIO {
         var lastMatchedObject: String? = null
         var lastMatchedMaterial: String? = null
 
-        text.lines().forEach {
-            val vertexMatch = VERTEX.matchEntire(it)
-            val normalMatch = NORMAL.matchEntire(it)
-            val uvMatch = UV.matchEntire(it)
-            val objectMatch = OBJECT.matchEntire(it)
-            val materialMatch = MATERIAL.matchEntire(it)
-            val faceMatch = FACE.matchEntire(it)
+        text.lines().forEach { line ->
+            val vertexMatch = VERTEX.matchEntire(line)
+            val normalMatch = NORMAL.matchEntire(line)
+            val uvMatch = UV.matchEntire(line)
+            val objectMatch = OBJECT.matchEntire(line)
+            val materialMatch = MATERIAL.matchEntire(line)
+            val faceMatch = FACE.matchEntire(line)
 
             if (vertexMatch?.groupValues?.size == 4) {
                 val values = vertexMatch.groupValues
@@ -63,10 +65,11 @@ object ObjIO : ModelIO {
 
                 objects[lastMatchedObject]?.add(
                     Model.Face(
-                        lastMatchedMaterial,
-                        Model.Vertex(vertices[v1], normals[n1], u1?.let(uvs::get)),
-                        Model.Vertex(vertices[v2], normals[n2], u2?.let(uvs::get)),
-                        Model.Vertex(vertices[v3], normals[n3], u3?.let(uvs::get))
+                        Optional.ofNullable(lastMatchedMaterial),
+                        calculateFaceNormal(vertices[v1], vertices[v2], vertices[v3]),
+                        Model.Vertex(vertices[v1], Optional.of(normals[n1]), Optional.ofNullable(u1?.let { uvs[it] })),
+                        Model.Vertex(vertices[v2], Optional.of(normals[n2]), Optional.ofNullable(u2?.let { uvs[it] })),
+                        Model.Vertex(vertices[v3], Optional.of(normals[n3]), Optional.ofNullable(u3?.let { uvs[it] }))
                     )
                 )
             }
@@ -111,23 +114,23 @@ object ObjIO : ModelIO {
                 val n1 = face.first.normal
                 val n2 = face.second.normal
                 val n3 = face.third.normal
-                val u1 = face.first.uv ?: ""
-                val u2 = face.second.uv ?: ""
-                val u3 = face.third.uv ?: ""
+                val u1 = face.first.uv.getOrNull() ?: ""
+                val u2 = face.second.uv.getOrNull() ?: ""
+                val u3 = face.third.uv.getOrNull() ?: ""
 
                 lines.add("f $v1/$u1/$n1 $v2/$u2/$n2 $v3/$u3/$n3")
             }
 
             lines.add("o $name")
 
-            faces.filter { it.material == null }.forEach(::writeFace)
+            faces.filter { !it.material.isPresent }.forEach(::writeFace)
 
             var lastMaterial = ""
 
-            faces.filter { it.material != null }.sortedBy { it.material }.forEach {
-                if (lastMaterial != it.material) {
-                    lastMaterial = it.material!!
-                    lines.add("usemtl ${it.material}")
+            faces.filter { it.material.isPresent }.sortedBy { it.material.get() }.forEach {
+                if (lastMaterial != it.material.get()) {
+                    lastMaterial = it.material.get()
+                    lines.add("usemtl $lastMaterial")
                 }
                 writeFace(it)
             }
@@ -148,35 +151,35 @@ object ObjIO : ModelIO {
                         val firstCoordinate = face.first.coordinate.convert()
                         val secondCoordinate = face.second.coordinate.convert()
                         val thirdCoordinate = face.third.coordinate.convert()
-                        val firstNormal = face.first.normal.convert()
-                        val secondNormal = face.second.normal.convert()
-                        val thirdNormal = face.third.normal.convert()
-                        val firstUV = face.first.uv?.convert()
-                        val secondUV = face.second.uv?.convert()
-                        val thirdUV = face.third.uv?.convert()
+                        val firstNormal = face.first.normal.getOrNull()?.convert()
+                        val secondNormal = face.second.normal.getOrNull()?.convert()
+                        val thirdNormal = face.third.normal.getOrNull()?.convert()
+                        val firstUV = face.first.uv.getOrNull()?.convert()
+                        val secondUV = face.second.uv.getOrNull()?.convert()
+                        val thirdUV = face.third.uv.getOrNull()?.convert()
 
                         coordinates.addAll(listOf(firstCoordinate, secondCoordinate, thirdCoordinate))
-                        normals.addAll(listOf(firstNormal, secondNormal, thirdNormal))
+                        normals.addAll(listOfNotNull(firstNormal, secondNormal, thirdNormal))
                         uvs.addAll(listOfNotNull(firstUV, secondUV, thirdUV))
-                        face.material?.let(materials::add)
+                        face.material.ifPresent(materials::add)
 
                         val first =
                             SimpleModel.Vertex(
                                 coordinates.indexOf(firstCoordinate) + 1,
                                 normals.indexOf(firstNormal) + 1,
-                                if (firstUV != null) uvs.indexOf(firstUV) + 1 else null
+                                Optional.ofNullable(firstUV?.let { uvs.indexOf(it) + 1 })
                             )
                         val second =
                             SimpleModel.Vertex(
                                 coordinates.indexOf(secondCoordinate) + 1,
                                 normals.indexOf(secondNormal) + 1,
-                                if (secondUV != null) uvs.indexOf(secondUV) + 1 else null
+                                Optional.ofNullable(secondUV?.let { uvs.indexOf(it) + 1 })
                             )
                         val third =
                             SimpleModel.Vertex(
                                 coordinates.indexOf(thirdCoordinate) + 1,
                                 normals.indexOf(thirdNormal) + 1,
-                                if (thirdUV != null) uvs.indexOf(thirdUV) + 1 else null
+                                Optional.ofNullable(thirdUV?.let { uvs.indexOf(it) + 1 })
                             )
 
                         SimpleModel.Face(face.material, first, second, third)
@@ -188,9 +191,32 @@ object ObjIO : ModelIO {
         return SimpleModel(coordinates, normals, uvs, materials, objects)
     }
 
+    /**
+     * https://www.khronos.org/opengl/wiki/Calculating_a_Surface_Normal
+     */
+    private fun calculateFaceNormal(p1: Model.Vector3f, p2: Model.Vector3f, p3: Model.Vector3f): Model.Vector3f {
+        val u = p2.minus(p1)
+        val v = p3.minus(p1)
+        return u.cross(v)
+    }
+
     private fun Model.Vector2f.convert() = SimpleModel.Vector2f(x, y)
 
     private fun Model.Vector3f.convert() = SimpleModel.Vector3f(x, y, z)
+
+    private fun Model.Vector3f.minus(right: Model.Vector3f) =
+        Model.Vector3f(
+            x - right.x,
+            y - right.y,
+            z - right.z
+        )
+
+    private fun Model.Vector3f.cross(right: Model.Vector3f) =
+        Model.Vector3f(
+            y * right.z - z * right.y,
+            z * right.x - x * right.z,
+            x * right.y - y * right.x
+        )
 
     data class SimpleModel(
         val coordinates: Set<Vector3f>,
@@ -205,7 +231,7 @@ object ObjIO : ModelIO {
         )
 
         data class Face(
-            val material: String?,
+            val material: Optional<String>,
             val first: Vertex,
             val second: Vertex,
             val third: Vertex,
@@ -214,7 +240,7 @@ object ObjIO : ModelIO {
         data class Vertex(
             val coordinate: Int,
             val normal: Int,
-            val uv: Int?,
+            val uv: Optional<Int>,
         )
 
         data class Vector2f(

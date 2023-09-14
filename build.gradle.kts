@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("dev.siro256.modelio:ModelIO:0.1.0-SNAPSHOT")
+    implementation("dev.siro256.modelio:ModelIO:0.1.1-SNAPSHOT")
     implementation("dev.siro256.fastset:FastSet:0.1.0-SNAPSHOT")
 
     testImplementation(kotlin("test"))

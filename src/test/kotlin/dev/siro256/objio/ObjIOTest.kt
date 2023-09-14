@@ -4,6 +4,7 @@ import dev.siro256.modelio.Model
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
@@ -51,39 +52,41 @@ class ObjIOTest {
                         "square",
                         listOf(
                             Model.Face(
-                                "material",
+                                Optional.of("material"),
+                                Model.Vector3f(0.0f, 0.0f, 1.0f),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 0.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    Model.Vector2f(0.0f, 0.0f)
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.of(Model.Vector2f(0.0f, 0.0f))
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 0.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    Model.Vector2f(0.5f, 0.0f)
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.of(Model.Vector2f(0.5f, 0.0f))
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    Model.Vector2f(0.0f, 0.5f)
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.of(Model.Vector2f(0.0f, 0.5f))
                                 )
                             ),
                             Model.Face(
-                                "material",
+                                Optional.of("material"),
+                                Model.Vector3f(0.0f, 0.0f, 1.0f),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 0.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    Model.Vector2f(0.5f, 0.0f)
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.of(Model.Vector2f(0.5f, 0.0f))
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    Model.Vector2f(0.5f, 0.5f)
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.of(Model.Vector2f(0.5f, 0.5f))
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    Model.Vector2f(0.0f, 0.5f)
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.of(Model.Vector2f(0.0f, 0.5f))
                                 )
                             )
                         )
@@ -97,39 +100,41 @@ class ObjIOTest {
                         "square1",
                         listOf(
                             Model.Face(
-                                null,
+                                Optional.empty(),
+                                Model.Vector3f(0.0f, 0.0f, 1.0f),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 0.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    null
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.empty()
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 0.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    null
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.empty()
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    null
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.empty()
                                 )
                             ),
                             Model.Face(
-                                "material1",
+                                Optional.of("material1"),
+                                Model.Vector3f(0.0f, 0.0f, 1.0f),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 0.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    Model.Vector2f(0.5f, 0.0f)
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.of(Model.Vector2f(0.5f, 0.0f))
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    Model.Vector2f(0.5f, 0.5f)
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.of(Model.Vector2f(0.5f, 0.5f))
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    Model.Vector2f(0.0f, 0.5f)
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.of(Model.Vector2f(0.0f, 0.5f))
                                 )
                             )
                         )
@@ -138,39 +143,41 @@ class ObjIOTest {
                         "square2",
                         listOf(
                             Model.Face(
-                                null,
+                                Optional.empty(),
+                                Model.Vector3f(0.0f, 1.0f, 0.0f),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    null
+                                    Optional.of(Model.Vector3f(0.0f, 1.0f, 0.0f)),
+                                    Optional.empty()
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    null
+                                    Optional.of(Model.Vector3f(0.0f, 1.0f, 0.0f)),
+                                    Optional.empty()
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 1.0f, -1.0f),
-                                    Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    null
+                                    Optional.of(Model.Vector3f(0.0f, 1.0f, 0.0f)),
+                                    Optional.empty()
                                 )
                             ),
                             Model.Face(
-                                "material2",
+                                Optional.of("material2"),
+                                Model.Vector3f(0.0f, 1.0f, 0.0f),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    Model.Vector2f(1.0f, 0.5f)
+                                    Optional.of(Model.Vector3f(0.0f, 1.0f, 0.0f)),
+                                    Optional.of(Model.Vector2f(1.0f, 0.5f))
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 1.0f, -1.0f),
-                                    Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    Model.Vector2f(1.0f, 1.0f)
+                                    Optional.of(Model.Vector3f(0.0f, 1.0f, 0.0f)),
+                                    Optional.of(Model.Vector2f(1.0f, 1.0f))
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 1.0f, -1.0f),
-                                    Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    Model.Vector2f(0.5f, 1.0f)
+                                    Optional.of(Model.Vector3f(0.0f, 1.0f, 0.0f)),
+                                    Optional.of(Model.Vector2f(0.5f, 1.0f))
                                 )
                             )
                         )
@@ -184,39 +191,41 @@ class ObjIOTest {
                         "正方形1",
                         listOf(
                             Model.Face(
-                                null,
+                                Optional.empty(),
+                                Model.Vector3f(0.0f, 0.0f, 1.0f),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 0.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    null
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.empty()
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 0.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    null
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.empty()
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    null
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.empty()
                                 )
                             ),
                             Model.Face(
-                                "マテリアル1",
+                                Optional.of("マテリアル1"),
+                                Model.Vector3f(0.0f, 0.0f, 1.0f),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 0.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    Model.Vector2f(0.5f, 0.0f)
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.of(Model.Vector2f(0.5f, 0.0f))
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    Model.Vector2f(0.5f, 0.5f)
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.of(Model.Vector2f(0.5f, 0.5f))
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 0.0f, 1.0f),
-                                    Model.Vector2f(0.0f, 0.5f)
+                                    Optional.of(Model.Vector3f(0.0f, 0.0f, 1.0f)),
+                                    Optional.of(Model.Vector2f(0.0f, 0.5f))
                                 )
                             )
                         )
@@ -225,39 +234,41 @@ class ObjIOTest {
                         "正方形2",
                         listOf(
                             Model.Face(
-                                null,
+                                Optional.empty(),
+                                Model.Vector3f(0.0f, 1.0f, 0.0f),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    null
+                                    Optional.of(Model.Vector3f(0.0f, 1.0f, 0.0f)),
+                                    Optional.empty()
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    null
+                                    Optional.of(Model.Vector3f(0.0f, 1.0f, 0.0f)),
+                                    Optional.empty()
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 1.0f, -1.0f),
-                                    Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    null
+                                    Optional.of(Model.Vector3f(0.0f, 1.0f, 0.0f)),
+                                    Optional.empty()
                                 )
                             ),
                             Model.Face(
-                                "マテリアル2",
+                                Optional.of("マテリアル2"),
+                                Model.Vector3f(0.0f, 1.0f, 0.0f),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 1.0f, 0.0f),
-                                    Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    Model.Vector2f(1.0f, 0.5f)
+                                    Optional.of(Model.Vector3f(0.0f, 1.0f, 0.0f)),
+                                    Optional.of(Model.Vector2f(1.0f, 0.5f))
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(1.0f, 1.0f, -1.0f),
-                                    Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    Model.Vector2f(1.0f, 1.0f)
+                                    Optional.of(Model.Vector3f(0.0f, 1.0f, 0.0f)),
+                                    Optional.of(Model.Vector2f(1.0f, 1.0f))
                                 ),
                                 Model.Vertex(
                                     Model.Vector3f(0.0f, 1.0f, -1.0f),
-                                    Model.Vector3f(0.0f, 1.0f, 0.0f),
-                                    Model.Vector2f(0.5f, 1.0f)
+                                    Optional.of(Model.Vector3f(0.0f, 1.0f, 0.0f)),
+                                    Optional.of(Model.Vector2f(0.5f, 1.0f))
                                 )
                             )
                         )
